@@ -506,39 +506,57 @@ DELETE FROM inventory WHERE item_id = 10;</code></pre></div></details></div></ar
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. I. A modem modulates and demodulates signals so data can travel over a communications link. II. A gateway gives devices a path to another network and can translate protocols when needed.</p><p>B. I. HTTP is Hypertext Transfer Protocol. FTP is File Transfer Protocol. II. A web server handles requests and serves resources. A web browser sends those requests and renders the returned pages.</p></div></details></div></article><article class="question-card" id="p1-q29" data-paper="1" data-chapters="4" aria-label="CBSE Sample Question Paper 2025–26, question 29">
 <div class="reference"><strong>Q29</strong><span title="CBSE Sample Question Paper 2025–26">SQP 2025–26</span><span>p. 4</span></div>
 <div><p class="chapter-line">File Handling</p><div class="question-text"><p class="part">A. Write a Python function that displays the number of times the word &quot;Python&quot; appears in a text file named &quot;Prog.txt&quot;.</p><p class="either">or</p><p class="part">B. Write and call a Python function to read lines from a text file STORIES.TXT and display those lines which doesn’t start with a vowel (A, E, I, O, U) irrespective of their case.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A counts whole occurrences of the exact word Python. B checks the first character case-insensitively. The demo creates a small sample file for each choice.</p><pre><code>import re
-from pathlib import Path
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. Treat punctuation as a separator and count the whole, case-sensitive word Python.</p><p>B. Check the first character of each nonblank line against both uppercase and lowercase vowels.</p><pre><code>def count_python():
+    with open(&quot;Prog.txt&quot;, &quot;r&quot;) as file:
+        text = file.read()
 
-def count_python():
-    with open(&quot;Prog.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        print(len(re.findall(r&quot;\bPython\b&quot;, file.read())))
+    words = &quot;&quot;
+    for character in text:
+        if character.isalnum() or character == &quot;_&quot;:
+            words += character
+        else:
+            words += &quot; &quot;
+    print(words.split().count(&quot;Python&quot;))
 
 def show_non_vowel_lines():
-    with open(&quot;STORIES.TXT&quot;, encoding=&quot;utf-8&quot;) as file:
-        for line in file:
-            if line.strip() and not line.lower().startswith(tuple(&quot;aeiou&quot;)):
+    with open(&quot;STORIES.TXT&quot;, &quot;r&quot;) as file:
+        for line in file.readlines():
+            if line.strip() and line[0].lower() not in &quot;aeiou&quot;:
                 print(line.rstrip(&quot;\n&quot;))
 
-Path(&quot;Prog.txt&quot;).write_text(&quot;Python and Pythonic Python&quot;, encoding=&quot;utf-8&quot;)
-Path(&quot;STORIES.TXT&quot;).write_text(&quot;A beginning\nBirds sing.\nClouds drift.\n&quot;, encoding=&quot;utf-8&quot;)
+# Sample data for trying the functions
+with open(&quot;Prog.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Python and Pythonic Python.&quot;)
+with open(&quot;STORIES.TXT&quot;, &quot;w&quot;) as file:
+    file.write(&quot;A beginning\nBirds sing.\nClouds drift.\n&quot;)
+
 count_python()
 show_non_vowel_lines()</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="18" spellcheck="false" autocapitalize="off" autocorrect="off">import re
-from pathlib import Path
+<textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">def count_python():
+    with open(&quot;Prog.txt&quot;, &quot;r&quot;) as file:
+        text = file.read()
 
-def count_python():
-    with open(&quot;Prog.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        print(len(re.findall(r&quot;\bPython\b&quot;, file.read())))
+    words = &quot;&quot;
+    for character in text:
+        if character.isalnum() or character == &quot;_&quot;:
+            words += character
+        else:
+            words += &quot; &quot;
+    print(words.split().count(&quot;Python&quot;))
 
 def show_non_vowel_lines():
-    with open(&quot;STORIES.TXT&quot;, encoding=&quot;utf-8&quot;) as file:
-        for line in file:
-            if line.strip() and not line.lower().startswith(tuple(&quot;aeiou&quot;)):
+    with open(&quot;STORIES.TXT&quot;, &quot;r&quot;) as file:
+        for line in file.readlines():
+            if line.strip() and line[0].lower() not in &quot;aeiou&quot;:
                 print(line.rstrip(&quot;\n&quot;))
 
-Path(&quot;Prog.txt&quot;).write_text(&quot;Python and Pythonic Python&quot;, encoding=&quot;utf-8&quot;)
-Path(&quot;STORIES.TXT&quot;).write_text(&quot;A beginning\nBirds sing.\nClouds drift.\n&quot;, encoding=&quot;utf-8&quot;)
+# Sample data for trying the functions
+with open(&quot;Prog.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Python and Pythonic Python.&quot;)
+with open(&quot;STORIES.TXT&quot;, &quot;w&quot;) as file:
+    file.write(&quot;A beginning\nBirds sing.\nClouds drift.\n&quot;)
+
 count_python()
 show_non_vowel_lines()</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
@@ -651,29 +669,35 @@ SELECT * FROM SALES WHERE customer_name LIKE &#x27;%e&#x27;;</code></pre><p>B. I
 def Accept():
     record = [input(&quot;Product ID: &quot;), input(&quot;Product name: &quot;),
               int(input(&quot;Quantity sold: &quot;)), float(input(&quot;Price per unit: &quot;))]
-    with open(&quot;Sales.csv&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;Sales.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as file:
         csv.writer(file).writerow(record)
 
 def CalculateTotalSales():
-    with open(&quot;Sales.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
-        return sum(int(row[2]) * float(row[3]) for row in csv.reader(file)
-                   if row and row[0] != &quot;Product_ID&quot;)
+    with open(&quot;Sales.csv&quot;, newline=&quot;&quot;) as file:
+        total = 0
+        for row in csv.reader(file):
+            if row and row[0] != &quot;Product_ID&quot;:
+                total += int(row[2]) * float(row[3])
+        return total
 
 Accept()
 print(CalculateTotalSales())</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="16" spellcheck="false" autocapitalize="off" autocorrect="off">import csv
+<textarea class="editor" aria-label="Python code" rows="19" spellcheck="false" autocapitalize="off" autocorrect="off">import csv
 
 def Accept():
     record = [input(&quot;Product ID: &quot;), input(&quot;Product name: &quot;),
               int(input(&quot;Quantity sold: &quot;)), float(input(&quot;Price per unit: &quot;))]
-    with open(&quot;Sales.csv&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;Sales.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as file:
         csv.writer(file).writerow(record)
 
 def CalculateTotalSales():
-    with open(&quot;Sales.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
-        return sum(int(row[2]) * float(row[3]) for row in csv.reader(file)
-                   if row and row[0] != &quot;Product_ID&quot;)
+    with open(&quot;Sales.csv&quot;, newline=&quot;&quot;) as file:
+        total = 0
+        for row in csv.reader(file):
+            if row and row[0] != &quot;Product_ID&quot;:
+                total += int(row[2]) * float(row[3])
+        return total
 
 Accept()
 print(CalculateTotalSales())</textarea>
@@ -687,18 +711,18 @@ Bandage
 <div class="reference"><strong>Q34</strong><span title="CBSE Sample Question Paper 2025–26">SQP 2025–26</span><span>p. 6</span></div>
 <div><p class="chapter-line">Simple Queries in SQL / Table Creation and Data Manipulation Commands / Grouping Records, Joins in SQL</p><div class="question-text"><p>Pranav is managing a Travel Database and needs to access certain information from the Hotels and Bookings tables for an upcoming tourism survey. Help him extract the required information by writing the appropriate SQL queries as per the tasks mentioned below:</p><div class="table-scroll" tabindex="0" aria-label="Hotels table"><table><caption>Hotels</caption><thead><tr><th scope="col">H_ID</th><th scope="col">Hotel_Name</th><th scope="col">City</th><th scope="col">Star_Rating</th></tr></thead><tbody><tr><td>1</td><td>Hotel1</td><td>Delhi</td><td>5</td></tr><tr><td>2</td><td>Hotel2</td><td>Mumbai</td><td>5</td></tr><tr><td>3</td><td>Hotel3</td><td>Hyderabad</td><td>4</td></tr><tr><td>4</td><td>Hotel4</td><td>Bengaluru</td><td>5</td></tr><tr><td>5</td><td>Hotel5</td><td>Chennai</td><td>4</td></tr><tr><td>6</td><td>Hotel6</td><td>Kolkata</td><td>4</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" aria-label="Bookings table"><table><caption>Bookings</caption><thead><tr><th scope="col">B_ID</th><th scope="col">H_ID</th><th scope="col">Customer_Name</th><th scope="col">Check_In</th><th scope="col">Check_Out</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>Jiya</td><td>2024-12-01</td><td>2024-12-05</td></tr><tr><td>2</td><td>2</td><td>Priya</td><td>2024-12-03</td><td>2024-12-07</td></tr><tr><td>3</td><td>3</td><td>Alicia</td><td>2024-12-01</td><td>2024-12-06</td></tr><tr><td>4</td><td>4</td><td>Bhavik</td><td>2024-12-02</td><td>2024-12-03</td></tr><tr><td>5</td><td>5</td><td>Charu</td><td>2024-12-01</td><td>2024-12-02</td></tr><tr><td>6</td><td>6</td><td>Esha</td><td>2024-12-04</td><td>2024-12-08</td></tr><tr><td>7</td><td>6</td><td>Dia</td><td>2024-12-02</td><td>2024-12-06</td></tr><tr><td>8</td><td>4</td><td>Sonia</td><td>2024-12-04</td><td>2024-12-08</td></tr></tbody></table></div><p class="part">I. To display a list of customer names who have bookings in any hotel of &#x27;Delhi&#x27; city.</p><p class="part">II. To display the booking details for customers who have booked hotels in &#x27;Mumbai&#x27;, &#x27;Chennai&#x27;, or &#x27;Kolkata&#x27;.</p><p class="part">III. To delete all bookings where the check-in date is before 2024-12-03.</p><p class="part">IV. A. To display the Cartesian Product of the two tables.</p><p class="either">or</p><p class="part">B. To display the customer’s name along with their booked hotel’s name.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>I, II and IV-B join on H_ID. IV-A pairs every hotel with every booking.</p><pre><code>SELECT DISTINCT b.Customer_Name
-FROM Bookings AS b JOIN Hotels AS h ON b.H_ID = h.H_ID
-WHERE h.City = &#x27;Delhi&#x27;;
+FROM Bookings AS b, Hotels AS h
+WHERE b.H_ID = h.H_ID AND h.City = &#x27;Delhi&#x27;;
 
-SELECT b.* FROM Bookings AS b JOIN Hotels AS h ON b.H_ID = h.H_ID
-WHERE h.City IN (&#x27;Mumbai&#x27;, &#x27;Chennai&#x27;, &#x27;Kolkata&#x27;);
+SELECT b.* FROM Bookings AS b, Hotels AS h
+WHERE b.H_ID = h.H_ID AND h.City IN (&#x27;Mumbai&#x27;, &#x27;Chennai&#x27;, &#x27;Kolkata&#x27;);
 
 DELETE FROM Bookings WHERE Check_In &lt; &#x27;2024-12-03&#x27;;
 
-SELECT * FROM Hotels CROSS JOIN Bookings;
+SELECT * FROM Hotels, Bookings;
 
 SELECT b.Customer_Name, h.Hotel_Name
-FROM Bookings AS b JOIN Hotels AS h ON b.H_ID = h.H_ID;</code></pre></div></details></div></article><article class="question-card" id="p1-q36" data-paper="1" data-chapters="4" aria-label="CBSE Sample Question Paper 2025–26, question 36">
+FROM Bookings AS b, Hotels AS h WHERE b.H_ID = h.H_ID;</code></pre></div></details></div></article><article class="question-card" id="p1-q36" data-paper="1" data-chapters="4" aria-label="CBSE Sample Question Paper 2025–26, question 36">
 <div class="reference"><strong>Q36</strong><span title="CBSE Sample Question Paper 2025–26">SQP 2025–26</span><span>p. 7</span></div>
 <div><p class="chapter-line">File Handling</p><div class="question-text"><p>Mr. Ravi, a manager at a tech company, needs to maintain records of employees. Each record should include: Employee_ID, Employee_Name, Department and Salary. Write the Python functions to:</p><p class="part">I. Input employee data and append it to a binary file.</p><p class="part">II. Update the salary of employees in the &quot;IT&quot; department to 200000.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>Append each record using pickle. Read until EOF, update matching records and rewrite the file with the full record set.</p><pre><code>import pickle
@@ -943,33 +967,31 @@ print(text[-2: :-4])</textarea>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>C. The assertion is true and the reason is false. Use IS NULL. A comparison using = NULL evaluates to UNKNOWN.</p></div></details></div></article><article class="question-card" id="p2-q22" data-paper="2" data-chapters="2 4" aria-label="CBSE Sample Question Paper 2026–27, question 22">
 <div class="reference"><strong>Q22</strong><span title="CBSE Sample Question Paper 2026–27">SQP 2026–27</span><span>p. 4</span></div>
 <div><p class="chapter-line">Working with Functions / File Handling</p><div class="question-text"><p class="part">A. Define global variable and local variable with a suitable example.</p><p class="either">or</p><p class="part">B. Write the difference between the seek() and tell() methods in Python text file handling with a suitable example.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. A global variable is defined at module scope. A local variable belongs to a function invocation. A function can read a global name unless it is shadowed by a local assignment.</p><p>B. tell() returns the current stream position. seek() moves to a position, such as 0 for the start of the file.</p><pre><code>from pathlib import Path
-
-school = &quot;Central School&quot;
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. A global variable is defined at module scope. A local variable belongs to a function invocation. A function can read a global name unless it is shadowed by a local assignment.</p><p>B. tell() returns the current stream position. seek() moves to a position, such as 0 for the start of the file.</p><pre><code>school = &quot;Central School&quot;
 
 def show():
     student = &quot;Neha&quot;
     print(school, student)
 
 show()
-Path(&quot;sample.txt&quot;).write_text(&quot;Hello&quot;, encoding=&quot;utf-8&quot;)
-with open(&quot;sample.txt&quot;, encoding=&quot;utf-8&quot;) as file:
+with open(&quot;sample.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Hello&quot;)
+with open(&quot;sample.txt&quot;) as file:
     file.read(2)
     print(file.tell())
     file.seek(0)
     print(file.read())</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="16" spellcheck="false" autocapitalize="off" autocorrect="off">from pathlib import Path
-
-school = &quot;Central School&quot;
+<textarea class="editor" aria-label="Python code" rows="15" spellcheck="false" autocapitalize="off" autocorrect="off">school = &quot;Central School&quot;
 
 def show():
     student = &quot;Neha&quot;
     print(school, student)
 
 show()
-Path(&quot;sample.txt&quot;).write_text(&quot;Hello&quot;, encoding=&quot;utf-8&quot;)
-with open(&quot;sample.txt&quot;, encoding=&quot;utf-8&quot;) as file:
+with open(&quot;sample.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Hello&quot;)
+with open(&quot;sample.txt&quot;) as file:
     file.read(2)
     print(file.tell())
     file.seek(0)
@@ -999,19 +1021,33 @@ for i in range(L - 1, -1, -1):
 <div class="reference"><strong>Q24</strong><span title="CBSE Sample Question Paper 2026–27">SQP 2026–27</span><span>p. 4</span></div>
 <div><p class="chapter-line">Python Revision Tour / Working with Functions</p><div class="question-text"><p class="part">A. Write a Python function capitalize_words(words) that takes a list of strings words and returns a new list with each word capitalize.</p><p class="part">Example: If the input is [&quot;python&quot;, &quot;computer&quot;, &quot;science&quot;] The output should be [&quot;Python&quot;, &quot;Computer&quot;, &quot;Science&quot;].</p><p class="either">or</p><p class="part">B. Write a Python function sum_positive(list1) that takes a list of numbers and prints the sum of all positive numbers in the list.</p><p class="part">Example: If the input is [10, -5, 20, -3, 7] The output should be 37.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>A builds a new list. B sums only values greater than zero.</p><pre><code>def capitalize_words(words):
-    return [word.capitalize() for word in words]
+    result = []
+    for word in words:
+        result.append(word.capitalize())
+    return result
 
 def sum_positive(list1):
-    print(sum(number for number in list1 if number &gt; 0))
+    total = 0
+    for number in list1:
+        if number &gt; 0:
+            total += number
+    print(total)
 
 print(capitalize_words([&quot;python&quot;, &quot;computer&quot;, &quot;science&quot;]))
 sum_positive([10, -5, 20, -3, 7])</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="9" spellcheck="false" autocapitalize="off" autocorrect="off">def capitalize_words(words):
-    return [word.capitalize() for word in words]
+<textarea class="editor" aria-label="Python code" rows="16" spellcheck="false" autocapitalize="off" autocorrect="off">def capitalize_words(words):
+    result = []
+    for word in words:
+        result.append(word.capitalize())
+    return result
 
 def sum_positive(list1):
-    print(sum(number for number in list1 if number &gt; 0))
+    total = 0
+    for number in list1:
+        if number &gt; 0:
+            total += number
+    print(total)
 
 print(capitalize_words([&quot;python&quot;, &quot;computer&quot;, &quot;science&quot;]))
 sum_positive([10, -5, 20, -3, 7])</textarea>
@@ -1085,39 +1121,73 @@ UPDATE Student SET City = &#x27;Pune&#x27; WHERE Roll_No = 12;</code></pre></div
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. HTTP is the web protocol. HTTPS is its encrypted form. Firefox is an example browser.</p><p>B. A tree topology arranges connected segments in a hierarchy. Failure of an upstream device can disconnect the entire subtree below it.</p></div></details></div></article><article class="question-card" id="p2-q29" data-paper="2" data-chapters="4" aria-label="CBSE Sample Question Paper 2026–27, question 29">
 <div class="reference"><strong>Q29</strong><span title="CBSE Sample Question Paper 2026–27">SQP 2026–27</span><span>p. 5</span></div>
 <div><p class="chapter-line">File Handling</p><div class="question-text"><p class="part">A. Write and call a Python function to read &quot;History.txt&quot; and display all lines that contain a four-digit year (e.g., 1999, 2024 etc.)</p><p class="either">or</p><p class="part">B. Write a Python function that displays the number of times the word &quot;Python&quot; appears in a text file named &quot;Prog.txt&quot;.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A matches four-digit year tokens and prints matching lines. B counts whole occurrences of the case-sensitive word Python.</p><pre><code>import re
-from pathlib import Path
-
-def show_year_lines():
-    with open(&quot;History.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        for line in file:
-            if re.search(r&quot;\b[0-9]{4}\b&quot;, line):
-                print(line.rstrip(&quot;\n&quot;))
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. Separate the words on each line, then look for a four-digit token. Stop after the first match so each line prints once.</p><p>B. Count only whole occurrences of the case-sensitive word Python.</p><pre><code>def show_year_lines():
+    with open(&quot;History.txt&quot;, &quot;r&quot;) as file:
+        for line in file.readlines():
+            words = &quot;&quot;
+            for character in line:
+                if character.isalnum() or character == &quot;_&quot;:
+                    words += character
+                else:
+                    words += &quot; &quot;
+            for word in words.split():
+                if len(word) == 4 and word.isdigit():
+                    print(line.rstrip(&quot;\n&quot;))
+                    break
 
 def count_python():
-    with open(&quot;Prog.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        print(len(re.findall(r&quot;\bPython\b&quot;, file.read())))
+    with open(&quot;Prog.txt&quot;, &quot;r&quot;) as file:
+        text = file.read()
 
-Path(&quot;History.txt&quot;).write_text(&quot;The club began in 1999.\nA later update.\n&quot;, encoding=&quot;utf-8&quot;)
-Path(&quot;Prog.txt&quot;).write_text(&quot;Python, Pythonic, Python.&quot;, encoding=&quot;utf-8&quot;)
+    words = &quot;&quot;
+    for character in text:
+        if character.isalnum() or character == &quot;_&quot;:
+            words += character
+        else:
+            words += &quot; &quot;
+    print(words.split().count(&quot;Python&quot;))
+
+# Sample data for trying the functions
+with open(&quot;History.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;The club began in 1999.\nA later update.\n&quot;)
+with open(&quot;Prog.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Python, Pythonic, Python.&quot;)
+
 show_year_lines()
 count_python()</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="18" spellcheck="false" autocapitalize="off" autocorrect="off">import re
-from pathlib import Path
-
-def show_year_lines():
-    with open(&quot;History.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        for line in file:
-            if re.search(r&quot;\b[0-9]{4}\b&quot;, line):
-                print(line.rstrip(&quot;\n&quot;))
+<textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">def show_year_lines():
+    with open(&quot;History.txt&quot;, &quot;r&quot;) as file:
+        for line in file.readlines():
+            words = &quot;&quot;
+            for character in line:
+                if character.isalnum() or character == &quot;_&quot;:
+                    words += character
+                else:
+                    words += &quot; &quot;
+            for word in words.split():
+                if len(word) == 4 and word.isdigit():
+                    print(line.rstrip(&quot;\n&quot;))
+                    break
 
 def count_python():
-    with open(&quot;Prog.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        print(len(re.findall(r&quot;\bPython\b&quot;, file.read())))
+    with open(&quot;Prog.txt&quot;, &quot;r&quot;) as file:
+        text = file.read()
 
-Path(&quot;History.txt&quot;).write_text(&quot;The club began in 1999.\nA later update.\n&quot;, encoding=&quot;utf-8&quot;)
-Path(&quot;Prog.txt&quot;).write_text(&quot;Python, Pythonic, Python.&quot;, encoding=&quot;utf-8&quot;)
+    words = &quot;&quot;
+    for character in text:
+        if character.isalnum() or character == &quot;_&quot;:
+            words += character
+        else:
+            words += &quot; &quot;
+    print(words.split().count(&quot;Python&quot;))
+
+# Sample data for trying the functions
+with open(&quot;History.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;The club began in 1999.\nA later update.\n&quot;)
+with open(&quot;Prog.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Python, Pythonic, Python.&quot;)
+
 show_year_lines()
 count_python()</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
@@ -1167,24 +1237,38 @@ Pop_element()</textarea>
 <div><p class="chapter-line">Python Revision Tour / Working with Functions</p><div class="question-text"><p class="part">A. Write a Python function avg_len( ) segment that adds up the lengths of all the words in a list and then prints the average (mean) length.</p><p class="either">or</p><p class="part">B. Consider the tuple pairs = ((2,5),(4,2),(9,8),(12,10)). Write a Python function cnt_even( ) to count the number of pairs (a, b) where both a and b are even.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. Divide the sum of the word lengths by the number of words. The mean is undefined for an empty list.</p><p>B. The qualifying pairs are (4, 2) and (12, 10), so the count is 2.</p><pre><code>def avg_len(words):
     if words:
-        print(sum(len(word) for word in words) / len(words))
+        total = 0
+        for word in words:
+            total += len(word)
+        print(total / len(words))
     else:
         print(&quot;No words&quot;)
 
 def cnt_even(pairs):
-    return sum(a % 2 == 0 and b % 2 == 0 for a, b in pairs)
+    count = 0
+    for a, b in pairs:
+        if a % 2 == 0 and b % 2 == 0:
+            count += 1
+    return count
 
 avg_len([&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;])
 print(cnt_even(((2, 5), (4, 2), (9, 8), (12, 10))))</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="12" spellcheck="false" autocapitalize="off" autocorrect="off">def avg_len(words):
+<textarea class="editor" aria-label="Python code" rows="19" spellcheck="false" autocapitalize="off" autocorrect="off">def avg_len(words):
     if words:
-        print(sum(len(word) for word in words) / len(words))
+        total = 0
+        for word in words:
+            total += len(word)
+        print(total / len(words))
     else:
         print(&quot;No words&quot;)
 
 def cnt_even(pairs):
-    return sum(a % 2 == 0 and b % 2 == 0 for a, b in pairs)
+    count = 0
+    for a, b in pairs:
+        if a % 2 == 0 and b % 2 == 0:
+            count += 1
+    return count
 
 avg_len([&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;])
 print(cnt_even(((2, 5), (4, 2), (9, 8), (12, 10))))</textarea>
@@ -1206,29 +1290,35 @@ SELECT * FROM TECH_EVENT_REG ORDER BY participant_name DESC;</code></pre><p>B. I
 def AddRental():
     row = [input(&quot;Vehicle ID: &quot;), input(&quot;Vehicle type: &quot;),
            float(input(&quot;Hours rented: &quot;)), float(input(&quot;Rate per hour: &quot;))]
-    with open(&quot;Rentals.csv&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;Rentals.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as file:
         csv.writer(file).writerow(row)
 
 def CalculateTotalRent():
-    with open(&quot;Rentals.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
-        return sum(float(row[2]) * float(row[3]) for row in csv.reader(file)
-                   if row and row[0] != &quot;Vehicle_ID&quot;)
+    with open(&quot;Rentals.csv&quot;, newline=&quot;&quot;) as file:
+        total = 0
+        for row in csv.reader(file):
+            if row and row[0] != &quot;Vehicle_ID&quot;:
+                total += float(row[2]) * float(row[3])
+        return total
 
 AddRental()
 print(CalculateTotalRent())</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="16" spellcheck="false" autocapitalize="off" autocorrect="off">import csv
+<textarea class="editor" aria-label="Python code" rows="19" spellcheck="false" autocapitalize="off" autocorrect="off">import csv
 
 def AddRental():
     row = [input(&quot;Vehicle ID: &quot;), input(&quot;Vehicle type: &quot;),
            float(input(&quot;Hours rented: &quot;)), float(input(&quot;Rate per hour: &quot;))]
-    with open(&quot;Rentals.csv&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;Rentals.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as file:
         csv.writer(file).writerow(row)
 
 def CalculateTotalRent():
-    with open(&quot;Rentals.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
-        return sum(float(row[2]) * float(row[3]) for row in csv.reader(file)
-                   if row and row[0] != &quot;Vehicle_ID&quot;)
+    with open(&quot;Rentals.csv&quot;, newline=&quot;&quot;) as file:
+        total = 0
+        for row in csv.reader(file):
+            if row and row[0] != &quot;Vehicle_ID&quot;:
+                total += float(row[2]) * float(row[3])
+        return total
 
 AddRental()
 print(CalculateTotalRent())</textarea>
@@ -1241,19 +1331,18 @@ Sedan
 <pre class="output" role="status" aria-live="polite"></pre></div></details></div></details></div></article><article class="question-card" id="p2-q34" data-paper="2" data-chapters="10 11 12" aria-label="CBSE Sample Question Paper 2026–27, question 34">
 <div class="reference"><strong>Q34</strong><span title="CBSE Sample Question Paper 2026–27">SQP 2026–27</span><span>p. 6</span></div>
 <div><p class="chapter-line">Simple Queries in SQL / Table Creation and Data Manipulation Commands / Grouping Records, Joins in SQL</p><div class="question-text"><p>Aditi is managing an events database and needs to access certain information from the chess_event and registrations tables for an upcoming survey. Help her extract the required information by writing the appropriate MySQL queries as per the tasks mentioned below:</p><div class="table-scroll" tabindex="0" aria-label="Chess_Event table"><table><caption>Chess_Event</caption><thead><tr><th scope="col">Event_ID</th><th scope="col">Event_Name</th><th scope="col">Event_Date</th><th scope="col">Venue</th><th scope="col">Max_Participants</th></tr></thead><tbody><tr><td>101</td><td>Inter-School Chess Championship</td><td>2025-01-15</td><td>Auditorium Hall</td><td>60</td></tr><tr><td>102</td><td>Rapid Chess Tournament</td><td>2025-02-10</td><td>Activity Room 3</td><td>40</td></tr><tr><td>103</td><td>Under-16 Chess Cup</td><td>2025-03-05</td><td>Sports Complex Room 2</td><td>50</td></tr><tr><td>104</td><td>Teachers vs Students Chess Meet</td><td>2025-04-12</td><td>Library Conference Area</td><td>30</td></tr><tr><td>105</td><td>Open Blitz Chess Challenge</td><td>2025-05-20</td><td>IT Lab 1</td><td>80</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" aria-label="Registrations table"><table><caption>Registrations</caption><thead><tr><th scope="col">Reg_ID</th><th scope="col">Student_Name</th><th scope="col">Class</th><th scope="col">Event_ID</th><th scope="col">Registration_Date</th></tr></thead><tbody><tr><td>1</td><td>Aarav Singh</td><td>9A</td><td>101</td><td>2024-12-20</td></tr><tr><td>2</td><td>Navya Sharma</td><td>9C</td><td>103</td><td>2025-01-12</td></tr><tr><td>3</td><td>Rudransh Verma</td><td>10B</td><td>102</td><td>2025-01-25</td></tr><tr><td>4</td><td>Daksh Lal</td><td>9B</td><td>104</td><td>2025-02-18</td></tr><tr><td>5</td><td>Abhijay Malhotra</td><td>11A</td><td>105</td><td>2025-03-30</td></tr><tr><td>6</td><td>Krish Sharma</td><td>10A</td><td>101</td><td>2024-12-22</td></tr><tr><td>7</td><td>Manas Taneja</td><td>8C</td><td>102</td><td>2025-01-28</td></tr><tr><td>8</td><td>Riya Kapoor</td><td>11B</td><td>105</td><td>2025-04-01</td></tr><tr><td>9</td><td>Harsh Mehta</td><td>12A</td><td>103</td><td>2025-02-20</td></tr><tr><td>10</td><td>Simran Kaur</td><td>9D</td><td>104</td><td>2025-03-05</td></tr></tbody></table></div><p class="part">I. Write a MySQL query to update the venue of the event &quot;Inter-School Chess Championship&quot; to &quot;Multi-Purpose Hall&quot;.</p><p class="part">II. Display the details of all chess events scheduled after 2025-01-01.</p><p class="part">III. Write a MySQL query to display the registration details of students who have registered for events scheduled in ‘Auditorium Hall’, ‘Activity Room 3’, or ‘Library Conference Area’.</p><p class="part">IV. a. Display the student_name along with the event_name for all registrations</p><p class="either">or</p><p>b. Write a MySQL query to display the cartesian product of Chess_Event and Registrations tables.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>Join the two tables on Event_ID for the registration and event-name tasks. Use CROSS JOIN for IV-B.</p><pre><code>UPDATE Chess_Event SET Venue = &#x27;Multi-Purpose Hall&#x27;
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>Join the two tables on Event_ID for the registration and event-name tasks. List both tables in FROM for the Cartesian product in IV-B.</p><pre><code>UPDATE Chess_Event SET Venue = &#x27;Multi-Purpose Hall&#x27;
 WHERE Event_Name = &#x27;Inter-School Chess Championship&#x27;;
 
 SELECT * FROM Chess_Event WHERE Event_Date &gt; &#x27;2025-01-01&#x27;;
 
-SELECT r.* FROM Registrations AS r
-JOIN Chess_Event AS e ON r.Event_ID = e.Event_ID
-WHERE e.Venue IN (&#x27;Auditorium Hall&#x27;, &#x27;Activity Room 3&#x27;, &#x27;Library Conference Area&#x27;);
+SELECT r.* FROM Registrations AS r, Chess_Event AS e
+WHERE r.Event_ID = e.Event_ID AND e.Venue IN (&#x27;Auditorium Hall&#x27;, &#x27;Activity Room 3&#x27;, &#x27;Library Conference Area&#x27;);
 
-SELECT r.Student_Name, e.Event_Name FROM Registrations AS r
-JOIN Chess_Event AS e ON r.Event_ID = e.Event_ID;
+SELECT r.Student_Name, e.Event_Name FROM Registrations AS r, Chess_Event AS e
+WHERE r.Event_ID = e.Event_ID;
 
-SELECT * FROM Chess_Event CROSS JOIN Registrations;</code></pre></div></details></div></article><article class="question-card" id="p2-q36" data-paper="2" data-chapters="4" aria-label="CBSE Sample Question Paper 2026–27, question 36">
+SELECT * FROM Chess_Event, Registrations;</code></pre></div></details></div></article><article class="question-card" id="p2-q36" data-paper="2" data-chapters="4" aria-label="CBSE Sample Question Paper 2026–27, question 36">
 <div class="reference"><strong>Q36</strong><span title="CBSE Sample Question Paper 2026–27">SQP 2026–27</span><span>p. 7</span></div>
 <div><p class="chapter-line">File Handling</p><div class="question-text"><p>A college administrator, Atul, maintains student course enrollment records. Each record includes Roll_No, Student_Name, Course, Fees. Write Python functions to:</p><p class="part">I. Input enrollment details and append them to a binary file.</p><p class="part">II. Update the Fees of all students enrolled in the &quot;Data Science&quot; course to 75000.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>Store one pickled record per enrollment. Update the matching course records and write the full list back in the same record format.</p><pre><code>import pickle
@@ -1328,7 +1417,7 @@ HR Center                       120
 Business Block                  45</code></pre><p class="part">I. Suggest the most suitable place (i.e. Block/Center) to install the server of this university with a suitable reason.</p><p class="part">II. Identify and draw the most suitable topology for connecting all the blocks if the university wants a centralized network management system.</p><p class="part">III. Suggest and placement of the following devices with reasons. a. Repeater b. Switch</p><p class="part">IV. The Institute is planning to link its study center situated in Delhi. Suggest a way to connect it with reasonably high speed guided medium.</p><p class="part">V. A. The Vice-Chancellor wants to hold a face-to-face digital meeting with the Heads of Departments in all blocks simultaneously. Which Protocol will be used?</p><p class="either">or</p><p class="part">B. What is the use of VoIP?</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>I. Put the server at the HR Center because it has the most computers (120).</p><p>II. Use a star with the central switch in the Technology Block. Connect it to Law (55 m), Business (70 m) and HR (45 m).</p><pre><code>                  Law
                    │ 55 m
-Business ─70 m─ Technology ─45 m─ HR Center</code></pre><p>III. Put an access switch in each block or center to connect local devices. Each link in the star is under 100 m, so standard copper Ethernet can use these lengths without a repeater.</p><p>IV. Use an optical-fiber connection to the Delhi center.</p><p>V-A. Use a video-conferencing protocol such as H.323. V-B. Voice over Internet Protocol carries voice calls over IP networks.</p></div></details></div></article></section><section class="paper-page" id="paper-3" data-page aria-label="Paper 3" hidden><article class="question-card" id="p4-q1" data-paper="4" data-chapters="1" aria-label="CBSE previous paper 91/7 · Set 4, question 1">
+Business ─70 m─ Technology ─45 m─ HR Center</code></pre><p>III. Put an access switch in each block or center to connect local devices. Each link in the star is under 100 m, so standard copper Ethernet can use these lengths without a repeater.</p><p>IV. Use an optical-fiber connection to the Delhi center.</p><p>V-A. Use VoIP (Voice over Internet Protocol) for the online meeting. V-B. Voice over Internet Protocol carries voice calls over IP networks.</p></div></details></div></article></section><section class="paper-page" id="paper-3" data-page aria-label="Paper 3" hidden><article class="question-card" id="p4-q1" data-paper="4" data-chapters="1" aria-label="CBSE previous paper 91/7 · Set 4, question 1">
 <div class="reference"><strong>Q01</strong><span title="CBSE previous paper 91/7 · Set 4">91/7</span><span>p. 3</span></div>
 <div><p class="chapter-line">Python Revision Tour</p><div class="question-text"><p>Which of the following is a keyword in Python ?</p><p class="choice part">(A) Break</p><p class="choice part">(B) None</p><p class="choice part">(C) For</p><p class="choice part">(D) Class</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>B. None. The keywords behind the distractors are spelled break, for and class.</p></div></details></div></article><article class="question-card" id="p4-q2" data-paper="4" data-chapters="1" aria-label="CBSE previous paper 91/7 · Set 4, question 2">
@@ -1461,16 +1550,16 @@ print(text.find(&quot;na&quot;), text.index(&quot;na&quot;))
 print(text.find(&quot;z&quot;))
 try:
     print(text.index(&quot;z&quot;))
-except ValueError as error:
-    print(type(error).__name__)</code></pre><details class="runner"><summary>Edit and run solution</summary>
+except ValueError:
+    print(&quot;ValueError&quot;)</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
 <textarea class="editor" aria-label="Python code" rows="8" spellcheck="false" autocapitalize="off" autocorrect="off">text = &quot;banana&quot;
 print(text.find(&quot;na&quot;), text.index(&quot;na&quot;))
 print(text.find(&quot;z&quot;))
 try:
     print(text.index(&quot;z&quot;))
-except ValueError as error:
-    print(type(error).__name__)</textarea>
+except ValueError:
+    print(&quot;ValueError&quot;)</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
 <textarea class="stdin" aria-label="Program input, one value per line" rows="2" spellcheck="false"></textarea></details>
 <div class="actions"><button type="button" class="run">Run</button><button type="button" class="stop" hidden>Stop</button><button type="button" class="reset">Reset</button></div>
@@ -1571,43 +1660,47 @@ SELECT * FROM HARVESTS WHERE YieldQuality = &#x27;excellent&#x27;;</code></pre><
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>I-A. A web server receives HTTP requests and serves web resources. I-B. Circuit switching reserves a path for the session. Packet switching divides data into packets that share network links.</p><p>II. FTP transfers files between hosts. SMTP sends and relays email. FTP uses a file-transfer session, while SMTP exchanges mail envelopes and messages.</p></div></details></div></article><article class="question-card" id="p4-q29" data-paper="4" data-chapters="4" aria-label="CBSE previous paper 91/7 · Set 4, question 29">
 <div class="reference"><strong>Q29</strong><span title="CBSE previous paper 91/7 · Set 4">91/7</span><span>p. 21</span></div>
 <div><p class="chapter-line">File Handling</p><div class="question-text"><p class="choice part">(a) Write a user-defined function in Python named Find_Pattern() which reads the contents of a text file named LOGS.TXT and displays all such lines that begin with the word &quot;ERROR&quot; (case-sensitive).</p><p class="part">For example, if the content of file LOGS.TXT is as follows : INFO: System startup complete. WARNING: Disk space low on drive C:. ERROR: Failed to connect to database. INFO: User &#x27;admin&#x27; logged in. DEBUG: Processing request &#x27;GET /data&#x27;. ERROR: Invalid input received from client. SUCCESS: Data saved. Then the function should display the lines : ERROR: Failed to connect to database. ERROR: Invalid input received from client.</p><p class="either">or</p><p class="choice part">(b) Write a user-defined function in Python named ContainsChar() which reads the contents of a text file named DOCUMENT.TXT and displays all such words that contain the letter &#x27;o&#x27; (case-insensitive).</p><p class="part">For example, if the content of file DOCUMENT.TXT is as follows : &quot;A brown fox quickly jumped over the dog. It loves to frolic.&quot; Then the function should display the following words: brown fox over dog. loves to frolic.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A uses a case-sensitive word boundary after ERROR. B splits on whitespace and checks each word case-insensitively, preserving punctuation in the display.</p><pre><code>import re
-from pathlib import Path
-
-def Find_Pattern():
-    with open(&quot;LOGS.TXT&quot;, encoding=&quot;utf-8&quot;) as file:
-        for line in file:
-            if re.match(r&quot;ERROR\b&quot;, line):
-                print(line.rstrip(&quot;\n&quot;))
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. Check for the exact uppercase word ERROR at the start of the line. The character after ERROR can be punctuation or whitespace.</p><p>B. Split the text into words and check for o case-insensitively. Print each word as it appears in the file.</p><pre><code>def Find_Pattern():
+    with open(&quot;LOGS.TXT&quot;, &quot;r&quot;) as file:
+        for line in file.readlines():
+            if line.startswith(&quot;ERROR&quot;):
+                if len(line) == 5 or (not line[5].isalnum() and line[5] != &quot;_&quot;):
+                    print(line.rstrip(&quot;\n&quot;))
 
 def ContainsChar():
-    with open(&quot;DOCUMENT.TXT&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;DOCUMENT.TXT&quot;, &quot;r&quot;) as file:
         for word in file.read().split():
             if &quot;o&quot; in word.lower():
                 print(word)
 
-Path(&quot;LOGS.TXT&quot;).write_text(&quot;INFO: Ready\nERROR: Request failed\n&quot;, encoding=&quot;utf-8&quot;)
-Path(&quot;DOCUMENT.TXT&quot;).write_text(&quot;A brown fox loves to frolic.&quot;, encoding=&quot;utf-8&quot;)
+# Sample data for trying the functions
+with open(&quot;LOGS.TXT&quot;, &quot;w&quot;) as file:
+    file.write(&quot;INFO: Ready\nERROR: Request failed\n&quot;)
+with open(&quot;DOCUMENT.TXT&quot;, &quot;w&quot;) as file:
+    file.write(&quot;A brown fox loves to frolic.&quot;)
+
 Find_Pattern()
 ContainsChar()</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">import re
-from pathlib import Path
-
-def Find_Pattern():
-    with open(&quot;LOGS.TXT&quot;, encoding=&quot;utf-8&quot;) as file:
-        for line in file:
-            if re.match(r&quot;ERROR\b&quot;, line):
-                print(line.rstrip(&quot;\n&quot;))
+<textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">def Find_Pattern():
+    with open(&quot;LOGS.TXT&quot;, &quot;r&quot;) as file:
+        for line in file.readlines():
+            if line.startswith(&quot;ERROR&quot;):
+                if len(line) == 5 or (not line[5].isalnum() and line[5] != &quot;_&quot;):
+                    print(line.rstrip(&quot;\n&quot;))
 
 def ContainsChar():
-    with open(&quot;DOCUMENT.TXT&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;DOCUMENT.TXT&quot;, &quot;r&quot;) as file:
         for word in file.read().split():
             if &quot;o&quot; in word.lower():
                 print(word)
 
-Path(&quot;LOGS.TXT&quot;).write_text(&quot;INFO: Ready\nERROR: Request failed\n&quot;, encoding=&quot;utf-8&quot;)
-Path(&quot;DOCUMENT.TXT&quot;).write_text(&quot;A brown fox loves to frolic.&quot;, encoding=&quot;utf-8&quot;)
+# Sample data for trying the functions
+with open(&quot;LOGS.TXT&quot;, &quot;w&quot;) as file:
+    file.write(&quot;INFO: Ready\nERROR: Request failed\n&quot;)
+with open(&quot;DOCUMENT.TXT&quot;, &quot;w&quot;) as file:
+    file.write(&quot;A brown fox loves to frolic.&quot;)
+
 Find_Pattern()
 ContainsChar()</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
@@ -1616,7 +1709,7 @@ ContainsChar()</textarea>
 <pre class="output" role="status" aria-live="polite"></pre></div></details></div></details></div></article><article class="question-card" id="p4-q30" data-paper="4" data-chapters="5" aria-label="CBSE previous paper 91/7 · Set 4, question 30">
 <div class="reference"><strong>Q30</strong><span title="CBSE previous paper 91/7 · Set 4">91/7</span><span>p. 23</span></div>
 <div><p class="chapter-line">Data Structures</p><div class="question-text"><p class="choice part">(a) Consider a globally declared dictionary named EMPLOYEE_PERFORMANCE which contains employee IDs and their respective performance scores (out of 100) as key:value pairs. For example, the dictionary EMPLOYEE_PERFORMANCE may contain items as follows : EMPLOYEE_PERFORMANCE = { &quot;E101&quot;: 85, &quot;E102&quot;: 92, &quot;E103&quot;: 78, &quot;E104&quot;: 95, &quot;E105&quot;: 80, &quot;E106&quot;: 70 } Write the following user-defined functions to perform the following given operations on a globally declared list implementing a stack named TOP_PERFORMERS_LIST :</p><p class="part">(I) PushHighPerformers(): This function should push all employee IDs from the dictionary EMPLOYEE_PERFORMANCE whose performance score is greater than or equal to 90 into the stack TOP_PERFORMERS_LIST. For example, on execution of the PushHighPerformers() function, the stack TOP_PERFORMERS_LIST should contain [&quot;E102&quot;, &quot;E104&quot;] (assuming the order of insertion is E102 then E104) from the above considered example of the dictionary EMPLOYEE_PERFORMANCE.</p><p class="part">(II) IsPerformanceListEmpty(): This function should check whether the stack TOP_PERFORMERS_LIST is empty or not. If it is empty, the function should return True; otherwise, it should return False.</p><p class="part">(III) PopPerformer(): This function should pop and return the topmost employee ID from the stack TOP_PERFORMERS_LIST. If the stack is already empty (check using the IsPerformanceListEmpty() function), then the function should display the message &quot;Stack Underflow: No top performer to pop.&quot;</p><p class="either">or</p><p class="choice part">(b) Consider a globally declared list of product prices named PRODUCT_PRICES as follows : PRODUCT_PRICES = [ 150.75, 85.00, 299.99, 50.50, 120.00, 99.95, 450.00 ] Write the following user-defined functions to perform the following given operations on a globally declared list implementing a stack named DISCOUNT_PRICES :</p><p class="part">(I) PushDiscPrices(): This function should push all those prices from the list PRODUCT_PRICES which are less than or equal to 100.00 into the stack DISCOUNT_PRICES. For example, on execution of the PushDiscPrices() function, the stack DISCOUNT_PRICES should contain [85.00, 50.50, 99.95] (assuming this order of pushing is based on appearance in the PRODUCT_PRICES list) from the above considered example of the list PRODUCT_PRICES.</p><p class="part">(II) PopDiscPrices(): This function should pop and display the last (topmost) price from the stack DISCOUNT_PRICES. If the stack is already empty, then the function should display the message &quot;No More Discount Prices to Pop&quot; and return None.</p><p class="part">(III) ShowDiscPrices(): This function should display all the prices from the stack DISCOUNT_PRICES without deleting any price from the stack. The content of DISCOUNT_PRICES should be displayed as per stack LIFO rule (i.e., last price to first price). If there are no prices in the stack, then display the message &quot;Stack is Empty: No discount prices to show&quot;.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. Filter by score and use pop() after checking for underflow.</p><p>B. Filter by price, pop the final item, and use reversed() when displaying the stack without changing it.</p><pre><code>EMPLOYEE_PERFORMANCE = {&quot;E101&quot;: 85, &quot;E102&quot;: 92, &quot;E103&quot;: 78,
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. Filter by score and use pop() after checking for underflow.</p><p>B. Filter by price, pop the final item, and traverse the stack from its last index to its first when displaying it without changing it.</p><pre><code>EMPLOYEE_PERFORMANCE = {&quot;E101&quot;: 85, &quot;E102&quot;: 92, &quot;E103&quot;: 78,
                         &quot;E104&quot;: 95, &quot;E105&quot;: 80, &quot;E106&quot;: 70}
 TOP_PERFORMERS_LIST = []
 
@@ -1646,13 +1739,13 @@ def PopDiscPrices():
     if not DISCOUNT_PRICES:
         print(&quot;No More Discount Prices to Pop&quot;)
         return None
-    print(f&quot;{DISCOUNT_PRICES.pop():.2f}&quot;)
+    print(DISCOUNT_PRICES.pop())
 
 def ShowDiscPrices():
     if not DISCOUNT_PRICES:
         print(&quot;Stack is Empty: No discount prices to show&quot;)
-    for price in reversed(DISCOUNT_PRICES):
-        print(f&quot;{price:.2f}&quot;)
+    for i in range(len(DISCOUNT_PRICES) - 1, -1, -1):
+        print(DISCOUNT_PRICES[i])
 
 PushHighPerformers()
 print(TOP_PERFORMERS_LIST)
@@ -1691,13 +1784,13 @@ def PopDiscPrices():
     if not DISCOUNT_PRICES:
         print(&quot;No More Discount Prices to Pop&quot;)
         return None
-    print(f&quot;{DISCOUNT_PRICES.pop():.2f}&quot;)
+    print(DISCOUNT_PRICES.pop())
 
 def ShowDiscPrices():
     if not DISCOUNT_PRICES:
         print(&quot;Stack is Empty: No discount prices to show&quot;)
-    for price in reversed(DISCOUNT_PRICES):
-        print(f&quot;{price:.2f}&quot;)
+    for i in range(len(DISCOUNT_PRICES) - 1, -1, -1):
+        print(DISCOUNT_PRICES[i])
 
 PushHighPerformers()
 print(TOP_PERFORMERS_LIST)
@@ -1786,13 +1879,13 @@ UPDATE PRODUCTS SET Price = 0 WHERE Quantity IS NULL;</code></pre><p>B. I. 175. 
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>Check the year in the ISO-format date field and append with csv.writer. The demo seeds one row of sample data.</p><pre><code>import csv
 
 def RecentOrders():
-    with open(&quot;ORDERS.CSV&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;ORDERS.CSV&quot;, newline=&quot;&quot;) as file:
         for row in csv.reader(file):
             if row and row[2].startswith(&quot;2024-&quot;):
                 print(row[0], row[3])
 
 def AddOrder(newOrder):
-    with open(&quot;ORDERS.CSV&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;ORDERS.CSV&quot;, &quot;a&quot;, newline=&quot;&quot;) as file:
         csv.writer(file).writerow(newOrder)
 
 AddOrder([&quot;ORD001&quot;, &quot;C101&quot;, &quot;2024-05-20&quot;, 150.75, &quot;Shipped&quot;])
@@ -1801,13 +1894,13 @@ RecentOrders()</code></pre><details class="runner"><summary>Edit and run solutio
 <textarea class="editor" aria-label="Python code" rows="15" spellcheck="false" autocapitalize="off" autocorrect="off">import csv
 
 def RecentOrders():
-    with open(&quot;ORDERS.CSV&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;ORDERS.CSV&quot;, newline=&quot;&quot;) as file:
         for row in csv.reader(file):
             if row and row[2].startswith(&quot;2024-&quot;):
                 print(row[0], row[3])
 
 def AddOrder(newOrder):
-    with open(&quot;ORDERS.CSV&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;ORDERS.CSV&quot;, &quot;a&quot;, newline=&quot;&quot;) as file:
         csv.writer(file).writerow(newOrder)
 
 AddOrder([&quot;ORD001&quot;, &quot;C101&quot;, &quot;2024-05-20&quot;, 150.75, &quot;Shipped&quot;])
@@ -1818,15 +1911,15 @@ RecentOrders()</textarea>
 <pre class="output" role="status" aria-live="polite"></pre></div></details></div></details></div></article><article class="question-card" id="p4-q34" data-paper="4" data-chapters="9 11 12" aria-label="CBSE previous paper 91/7 · Set 4, question 34">
 <div class="reference"><strong>Q34</strong><span title="CBSE previous paper 91/7 · Set 4">91/7</span><span>p. 35</span></div>
 <div><p class="chapter-line">Structured Query Language / Table Creation and Data Manipulation Commands / Grouping Records, Joins in SQL</p><div class="question-text"><p>Consider a database LIBRARY_CATALOG containing the following two tables – PUBLISHERS and BOOKS given below :</p><div class="table-scroll" tabindex="0" aria-label="PUBLISHERS table"><table><caption>PUBLISHERS</caption><thead><tr><th scope="col">PublID</th><th scope="col">Name</th><th scope="col">Country</th><th scope="col">Genre</th></tr></thead><tbody><tr><td>101</td><td>Grand Books</td><td>USA</td><td>Fiction</td></tr><tr><td>102</td><td>World Lit Press</td><td>UK</td><td>Non-Fiction</td></tr><tr><td>103</td><td>Tech Tome</td><td>Germany</td><td>Sci-Fi</td></tr><tr><td>104</td><td>Story Weaver</td><td>USA</td><td>Fiction</td></tr><tr><td>105</td><td>Global Insights</td><td>Canada</td><td>Non-Fiction</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" aria-label="BOOKS table"><table><caption>BOOKS</caption><thead><tr><th scope="col">BookID</th><th scope="col">Title</th><th scope="col">PublID</th><th scope="col">PublYear</th><th scope="col">Pages</th></tr></thead><tbody><tr><td>3001</td><td>The Last Horizon</td><td>101</td><td>2018</td><td>450</td></tr><tr><td>3002</td><td>Echoes of Tomorrow</td><td>103</td><td>2020</td><td>320</td></tr><tr><td>3003</td><td>A Brief History</td><td>102</td><td>2015</td><td>580</td></tr><tr><td>3004</td><td>Whispers in the Wind</td><td>101</td><td>2019</td><td>280</td></tr><tr><td>3005</td><td>Starship Odyssey</td><td>103</td><td>2021</td><td>400</td></tr><tr><td>3006</td><td>The Silent Shore</td><td>104</td><td>2022</td><td>350</td></tr><tr><td>3007</td><td>Understanding AI</td><td>103</td><td>2019</td><td>290</td></tr></tbody></table></div><p class="part">Note : The attribute Pages in the table BOOKS represents the total number of pages in a book, PublID represents the Publisher’s Identification Number, PublYear represents the Year of Publication. Write the SQL queries for the following :</p><p class="part">(I) (a) To display Title of all BOOKS and their corresponding PublYear which belong to the &#x27;Fiction&#x27; type of Genre (from PUBLISHERS table) through Equi Join.</p><p class="either">or</p><p class="choice part">(b) To display Title of all BOOKS and their corresponding PublYear which belong to the &#x27;Fiction&#x27; type of Genre (from PUBLISHERS table) through Natural Join.</p><p class="part">(II) To display Name of all PUBLISHERS and their corresponding Title of BOOKS in ascending order of PublYear.</p><p class="part">(III) To delete all records from the table BOOKS whose PublYear is older than 2020.</p><p class="part">(IV) To open the database LIBRARY_CATALOG and then display the names of all tables present in the database.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>I-A explicitly matches PublID. I-B uses NATURAL JOIN because PublID is the sole shared column in the given tables. The left join in II keeps publishers with no book in the sample.</p><pre><code>SELECT b.Title, b.PublYear
-FROM BOOKS AS b JOIN PUBLISHERS AS p ON b.PublID = p.PublID
-WHERE p.Genre = &#x27;Fiction&#x27;;
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>I-A explicitly matches PublID. I-B uses NATURAL JOIN because PublID is the sole shared column in the given tables. II matches publishers to their corresponding books by PublID.</p><pre><code>SELECT b.Title, b.PublYear
+FROM BOOKS AS b, PUBLISHERS AS p
+WHERE b.PublID = p.PublID AND p.Genre = &#x27;Fiction&#x27;;
 
 SELECT Title, PublYear FROM BOOKS NATURAL JOIN PUBLISHERS
 WHERE Genre = &#x27;Fiction&#x27;;
 
-SELECT p.Name, b.Title FROM PUBLISHERS AS p
-LEFT JOIN BOOKS AS b ON p.PublID = b.PublID
+SELECT p.Name, b.Title FROM PUBLISHERS AS p, BOOKS AS b
+WHERE p.PublID = b.PublID
 ORDER BY b.PublYear ASC;
 
 DELETE FROM BOOKS WHERE PublYear &lt; 2020;
@@ -1855,7 +1948,7 @@ def AdjustLowDosage():
             except EOFError:
                 break
             if record[4] &lt; 0.5:
-                record[3] = round(record[3] * 1.20)
+                record[3] = int(record[3] * 1.20 + 0.5)
             records.append(record)
     with open(filename, &quot;wb&quot;) as file:
         for record in records:
@@ -1885,7 +1978,7 @@ def AdjustLowDosage():
             except EOFError:
                 break
             if record[4] &lt; 0.5:
-                record[3] = round(record[3] * 1.20)
+                record[3] = int(record[3] * 1.20 + 0.5)
             records.append(record)
     with open(filename, &quot;wb&quot;) as file:
         for record in records:
@@ -1910,7 +2003,7 @@ Administrative Hub to Advanced Labs   250 metres</code></pre><p class="part">•
 Advanced Labs       100
 Data Analysis Centre 60
 Administrative Hub  150</code></pre><p>As the lead network architect, you need to propose a comprehensive network design and implementation plan that addresses all the key issues of The Green Sprout Institute’s expansion goals. Answer the questions given below in this respect :</p><p class="part">(I) Suggest a device to be installed in each of the sections of the Kolkata Research Campus to connect the cables of individual computers/devices within that section.</p><p class="part">(II) Suggest the most appropriate location (Section) to install the SERVER in the Kolkata campus (out of the 3 sections) to get the best and most effective connectivity and security for critical research data. Justify your answer.</p><p class="part">(III) Draw the cable layout to reliably connect various sections within the Kolkata Campus.</p><p class="part">(IV) What type of network out of PAN, LAN, MAN, WAN will be set up when the central Guwahati Head Office is connected with the new Kolkata Research Campus ?</p><p class="part">(V) (a) Which secure and high-bandwidth wired transmission medium should preferably be used to connect the Guwahati Head Office with the Kolkata Research Campus for transferring large datasets and research files ?</p><p class="either">or</p><p class="choice part">(b) Which specific protocol will be used if researchers at the Guwahati HQ need to have Collaborative Research Sessions using video conferencing with Kolkata Research Centre ?</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>I. Use an Ethernet switch in each section.</p><p>II. Place the server in the Administrative Hub, which has the most devices (150), in a secured room with access controls.</p><p>III. Use fiber between buildings. The shortest connected layout is Administrative Hub ─250 m─ Advanced Labs ─280 m─ Data Analysis Centre.</p><p>IV. WAN, because it links campuses in different cities.</p><p>V-A. Use optical fiber for capacity. Encrypt the link or traffic to secure the data in transit. V-B. H.323 is a standard for multimedia conferencing over packet networks.</p></div></details></div></article></section><section class="paper-page" id="paper-4" data-page aria-label="Paper 4" hidden><article class="question-card" id="p5-q1" data-paper="5" data-chapters="1" aria-label="CBSE previous paper 91 · Set 4, question 1">
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>I. Use an Ethernet switch in each section.</p><p>II. Place the server in the Administrative Hub, which has the most devices (150), in a secured room with access controls.</p><p>III. Use fiber between buildings. The shortest connected layout is Administrative Hub ─250 m─ Advanced Labs ─280 m─ Data Analysis Centre.</p><p>IV. WAN, because it links campuses in different cities.</p><p>V-A. Use optical fiber for capacity. Encrypt the link or traffic to secure the data in transit. V-B. Use VoIP (Voice over Internet Protocol) for the video conference.</p></div></details></div></article></section><section class="paper-page" id="paper-4" data-page aria-label="Paper 4" hidden><article class="question-card" id="p5-q1" data-paper="5" data-chapters="1" aria-label="CBSE previous paper 91 · Set 4, question 1">
 <div class="reference"><strong>Q01</strong><span title="CBSE previous paper 91 · Set 4">91 · Set 4</span><span>p. 3</span></div>
 <div><p class="chapter-line">Python Revision Tour</p><div class="question-text"><p>State True or False : In Python, data type of 74 is same as the data type of 74.0.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>False. 74 has type int and 74.0 has type float, although they compare equal.</p></div></details></div></article><article class="question-card" id="p5-q2" data-paper="5" data-chapters="1" aria-label="CBSE previous paper 91 · Set 4, question 2">
@@ -2138,47 +2231,53 @@ ALTER TABLE W_STOCK DROP COLUMN B_Qty;</code></pre></div></details></div></artic
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. A bus needs relatively little cabling. A fault in the shared backbone can disconnect the network.</p><p>B. A protocol defines rules for communication between devices. Hypertext Transfer Protocol (HTTP) carries web resources.</p></div></details></div></article><article class="question-card" id="p5-q29" data-paper="5" data-chapters="4" aria-label="CBSE previous paper 91 · Set 4, question 29">
 <div class="reference"><strong>Q29</strong><span title="CBSE previous paper 91 · Set 4">91 · Set 4</span><span>p. 17</span></div>
 <div><p class="chapter-line">File Handling</p><div class="question-text"><p class="choice part">(a) Write a Python function that counts and returns the number of digits appearing in the text file &quot;Space.txt&quot;. For example, if the file contains : Space exploration has unlocked incredible advancements in technology and science. Since the first moon landing in 1969, space agencies have sent probes to Mars, Jupiter and beyond. The ISS, orbiting Earth at about 400 km, serves as a hub for research. With missions planned for 2030, humanity’s cosmic journey continues! Then the function should return 11.</p><p class="either">or</p><p class="choice part">(b) Write a Python function that displays the words in which the lowercase letter &#x27;e&#x27; appears at least twice in the text file &#x27;Space.txt&#x27;. For example, if the file contains : Space exploration has unlocked incredible advancements in technology and science. Since the first moon landing in 1969, space agencies have sent probes to Mars, Jupiter and beyond. The ISS, orbiting Earth at about 400 km, serves as a hub for research. With missions planned for 2030, humanity’s cosmic journey continues! Then the function should display : incredible advancements science. agencies serves research.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. The sample contains 11 digits: four in 1969, three in 400 and four in 2030. B counts lowercase e in each whitespace-delimited word.</p><pre><code>from pathlib import Path
-
-def count_digits():
-    with open(&quot;Space.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        return sum(char.isdigit() for char in file.read())
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>A. The sample contains 11 digits: four in 1969, three in 400 and four in 2030. B counts lowercase e in each whitespace-delimited word.</p><pre><code>def count_digits():
+    with open(&quot;Space.txt&quot;) as file:
+        count = 0
+        for character in file.read():
+            if character.isdigit():
+                count += 1
+        return count
 
 def show_e_words():
-    with open(&quot;Space.txt&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;Space.txt&quot;) as file:
         for word in file.read().split():
             if word.count(&quot;e&quot;) &gt;= 2:
                 print(word, end=&quot; &quot;)
     print()
 
-Path(&quot;Space.txt&quot;).write_text(
-    &quot;Space exploration has unlocked incredible advancements in technology &quot;
-    &quot;and science. Since the first moon landing in 1969, space agencies have &quot;
-    &quot;sent probes to Mars, Jupiter and beyond. The ISS, orbiting Earth at &quot;
-    &quot;about 400 km, serves as a hub for research. With missions planned for &quot;
-    &quot;2030, humanity’s cosmic journey continues!&quot;, encoding=&quot;utf-8&quot;)
+# Sample data for trying the functions
+with open(&quot;Space.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Space exploration has unlocked incredible advancements in technology &quot;
+               &quot;and science. Since the first moon landing in 1969, space agencies have &quot;
+               &quot;sent probes to Mars, Jupiter and beyond. The ISS, orbiting Earth at &quot;
+               &quot;about 400 km, serves as a hub for research. With missions planned for &quot;
+               &quot;2030, humanity&#x27;s cosmic journey continues!&quot;)
 print(count_digits())
 show_e_words()</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
-<textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">from pathlib import Path
-
-def count_digits():
-    with open(&quot;Space.txt&quot;, encoding=&quot;utf-8&quot;) as file:
-        return sum(char.isdigit() for char in file.read())
+<textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">def count_digits():
+    with open(&quot;Space.txt&quot;) as file:
+        count = 0
+        for character in file.read():
+            if character.isdigit():
+                count += 1
+        return count
 
 def show_e_words():
-    with open(&quot;Space.txt&quot;, encoding=&quot;utf-8&quot;) as file:
+    with open(&quot;Space.txt&quot;) as file:
         for word in file.read().split():
             if word.count(&quot;e&quot;) &gt;= 2:
                 print(word, end=&quot; &quot;)
     print()
 
-Path(&quot;Space.txt&quot;).write_text(
-    &quot;Space exploration has unlocked incredible advancements in technology &quot;
-    &quot;and science. Since the first moon landing in 1969, space agencies have &quot;
-    &quot;sent probes to Mars, Jupiter and beyond. The ISS, orbiting Earth at &quot;
-    &quot;about 400 km, serves as a hub for research. With missions planned for &quot;
-    &quot;2030, humanity’s cosmic journey continues!&quot;, encoding=&quot;utf-8&quot;)
+# Sample data for trying the functions
+with open(&quot;Space.txt&quot;, &quot;w&quot;) as file:
+    file.write(&quot;Space exploration has unlocked incredible advancements in technology &quot;
+               &quot;and science. Since the first moon landing in 1969, space agencies have &quot;
+               &quot;sent probes to Mars, Jupiter and beyond. The ISS, orbiting Earth at &quot;
+               &quot;about 400 km, serves as a hub for research. With missions planned for &quot;
+               &quot;2030, humanity&#x27;s cosmic journey continues!&quot;)
 print(count_digits())
 show_e_words()</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
@@ -2200,8 +2299,8 @@ def pop_fruit(FruitStack):
 def display(FruitStack):
     if not FruitStack:
         print(&quot;EMPTY STACK&quot;)
-    for fruit in reversed(FruitStack):
-        print(fruit)
+    for i in range(len(FruitStack) - 1, -1, -1):
+        print(FruitStack[i])
 
 FruitStack = []
 push_fruit(FruitStack, {&quot;Name&quot;: &quot;Pear&quot;, &quot;Origin&quot;: &quot;India&quot;,
@@ -2223,8 +2322,8 @@ def pop_fruit(FruitStack):
 def display(FruitStack):
     if not FruitStack:
         print(&quot;EMPTY STACK&quot;)
-    for fruit in reversed(FruitStack):
-        print(fruit)
+    for i in range(len(FruitStack) - 1, -1, -1):
+        print(FruitStack[i])
 
 FruitStack = []
 push_fruit(FruitStack, {&quot;Name&quot;: &quot;Pear&quot;, &quot;Origin&quot;: &quot;India&quot;,
@@ -2235,10 +2334,10 @@ display(FruitStack)</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
 <textarea class="stdin" aria-label="Program input, one value per line" rows="2" spellcheck="false"></textarea></details>
 <div class="actions"><button type="button" class="run">Run</button><button type="button" class="stop" hidden>Stop</button><button type="button" class="reset">Reset</button></div>
-<pre class="output" role="status" aria-live="polite"></pre></div></details><p>B. The test uses the absolute value so it also accepts signed three-digit even integers.</p><pre><code>stack = []
+<pre class="output" role="status" aria-live="polite"></pre></div></details><p>B. Check whether the integer has three digits and is divisible by two. The test also handles negative integers.</p><pre><code>stack = []
 for index in range(10):
-    number = int(input(f&quot;Integer {index + 1}: &quot;))
-    if 100 &lt;= abs(number) &lt;= 999 and number % 2 == 0:
+    number = int(input(&quot;Enter an integer: &quot;))
+    if (100 &lt;= number &lt;= 999 or -999 &lt;= number &lt;= -100) and number % 2 == 0:
         stack.append(number)
 
 while stack:
@@ -2247,8 +2346,8 @@ print()</code></pre><details class="runner"><summary>Edit and run solution</summ
 <div class="runner-body">
 <textarea class="editor" aria-label="Python code" rows="10" spellcheck="false" autocapitalize="off" autocorrect="off">stack = []
 for index in range(10):
-    number = int(input(f&quot;Integer {index + 1}: &quot;))
-    if 100 &lt;= abs(number) &lt;= 999 and number % 2 == 0:
+    number = int(input(&quot;Enter an integer: &quot;))
+    if (100 &lt;= number &lt;= 999 or -999 &lt;= number &lt;= -100) and number % 2 == 0:
         stack.append(number)
 
 while stack:
@@ -2331,17 +2430,20 @@ SELECT * FROM STOCK WHERE Code LIKE &#x27;A%&#x27;;</code></pre><p>B. I. (0.5, 3
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>Skip the header and compare population as an integer. The script appends each qualifying data row to More.csv.</p><pre><code>import csv
 
 def copy_large_states():
-    with open(&quot;States.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as source:
-        with open(&quot;More.csv&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as destination:
+    with open(&quot;States.csv&quot;, newline=&quot;&quot;) as source:
+        with open(&quot;More.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as destination:
             rows = csv.reader(source)
-            next(rows, None)
             writer = csv.writer(destination)
+            first_row = True
             for row in rows:
-                if row and int(row[2]) &gt; 10_000_000:
+                if first_row:
+                    first_row = False
+                    continue
+                if row and int(row[2]) &gt; 10000000:
                     writer.writerow(row)
 
 # Example input for this browser run
-with open(&quot;States.csv&quot;, &quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as sample:
+with open(&quot;States.csv&quot;, &quot;w&quot;, newline=&quot;&quot;) as sample:
     csv.writer(sample).writerows([
         [&quot;State&quot;, &quot;Capital&quot;, &quot;Population&quot;, &quot;Language&quot;],
         [&quot;Andhra Pradesh&quot;, &quot;Amaravati&quot;, 52221000, &quot;Telugu&quot;],
@@ -2349,23 +2451,26 @@ with open(&quot;States.csv&quot;, &quot;w&quot;, newline=&quot;&quot;, encoding=
     ])
 
 copy_large_states()
-with open(&quot;More.csv&quot;, encoding=&quot;utf-8&quot;) as result:
+with open(&quot;More.csv&quot;) as result:
     print(result.read(), end=&quot;&quot;)</code></pre><details class="runner"><summary>Edit and run solution</summary>
 <div class="runner-body">
 <textarea class="editor" aria-label="Python code" rows="20" spellcheck="false" autocapitalize="off" autocorrect="off">import csv
 
 def copy_large_states():
-    with open(&quot;States.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as source:
-        with open(&quot;More.csv&quot;, &quot;a&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as destination:
+    with open(&quot;States.csv&quot;, newline=&quot;&quot;) as source:
+        with open(&quot;More.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as destination:
             rows = csv.reader(source)
-            next(rows, None)
             writer = csv.writer(destination)
+            first_row = True
             for row in rows:
-                if row and int(row[2]) &gt; 10_000_000:
+                if first_row:
+                    first_row = False
+                    continue
+                if row and int(row[2]) &gt; 10000000:
                     writer.writerow(row)
 
 # Example input for this browser run
-with open(&quot;States.csv&quot;, &quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as sample:
+with open(&quot;States.csv&quot;, &quot;w&quot;, newline=&quot;&quot;) as sample:
     csv.writer(sample).writerows([
         [&quot;State&quot;, &quot;Capital&quot;, &quot;Population&quot;, &quot;Language&quot;],
         [&quot;Andhra Pradesh&quot;, &quot;Amaravati&quot;, 52221000, &quot;Telugu&quot;],
@@ -2373,7 +2478,7 @@ with open(&quot;States.csv&quot;, &quot;w&quot;, newline=&quot;&quot;, encoding=
     ])
 
 copy_large_states()
-with open(&quot;More.csv&quot;, encoding=&quot;utf-8&quot;) as result:
+with open(&quot;More.csv&quot;) as result:
     print(result.read(), end=&quot;&quot;)</textarea>
 <details class="inputs"><summary>Input, one value per line</summary>
 <textarea class="stdin" aria-label="Program input, one value per line" rows="2" spellcheck="false"></textarea></details>
@@ -2383,13 +2488,11 @@ with open(&quot;More.csv&quot;, encoding=&quot;utf-8&quot;) as result:
 <div><p class="chapter-line">Simple Queries in SQL / Grouping Records, Joins in SQL</p><div class="question-text"><p>Assume that you are the Manager of the Loans department of a Finance House. To keep track of the loans you have created two tables : CUSTOMERS and LOANS. The sample data in these tables is given below :</p><div class="table-scroll" tabindex="0" aria-label="CUSTOMERS table"><table><caption>CUSTOMERS</caption><thead><tr><th scope="col">C_ID</th><th scope="col">C_Name</th><th scope="col">Phone</th></tr></thead><tbody><tr><td>00001</td><td>Raj Malhotra</td><td>1234567890</td></tr><tr><td>00003</td><td>David Xavier</td><td>3456789012</td></tr><tr><td>00004</td><td>Damini Iyer</td><td>3156789012</td></tr><tr><td>00008</td><td>Abdul</td><td>2345678901</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" aria-label="LOANS table"><table><caption>LOANS</caption><thead><tr><th scope="col">SNo</th><th scope="col">C_ID</th><th scope="col">L_Amt</th><th scope="col">L_Date</th><th scope="col">Terms</th><th scope="col">RoI</th></tr></thead><tbody><tr><td>1</td><td>00003</td><td>200000</td><td>2025-12-06</td><td>60</td><td>7.80</td></tr><tr><td>2</td><td>00008</td><td>2500000</td><td>2023-08-09</td><td>60</td><td>9.00</td></tr><tr><td>3</td><td>00001</td><td>500000</td><td>2025-08-13</td><td>48</td><td>6.00</td></tr><tr><td>4</td><td>00003</td><td>300000</td><td>2026-12-07</td><td>36</td><td>8.00</td></tr><tr><td>5</td><td>00004</td><td>600000</td><td>2026-12-07</td><td>60</td><td>6.00</td></tr></tbody></table></div><p class="part">Note : The tables may contain more records than shown here. The management of the Finance House needs certain reports from you. Write the queries to extract the following data to create the reports :</p><p class="part">(i) Number of records from LOANS table where Rate of Interest (RoI) is above 7.0.</p><p class="part">(ii) Names of the customers whose loan amount (L_Amt) is above 1000000.</p><p class="part">(iii) C_ID, C_Name and Terms of all those records where Loan Date (L_Date) is after 31st December, 2024.</p><p class="part">(iv) (a) Details of all the loans in the descending order of RoI.</p><p class="either">or</p><p class="choice part">(b) C_ID and average term for each C_ID from the LOANS table.</p></div>
 <details class="solution"><summary>Solution</summary><div class="result-copy"><p>Match loan records to customers using C_ID. The date condition is strict because the question says after 31 December.</p><pre><code>SELECT COUNT(*) FROM LOANS WHERE RoI &gt; 7.0;
 
-SELECT DISTINCT c.C_Name FROM CUSTOMERS AS c
-JOIN LOANS AS l ON c.C_ID = l.C_ID
-WHERE l.L_Amt &gt; 1000000;
+SELECT DISTINCT c.C_Name FROM CUSTOMERS AS c, LOANS AS l
+WHERE c.C_ID = l.C_ID AND l.L_Amt &gt; 1000000;
 
-SELECT c.C_ID, c.C_Name, l.Terms FROM CUSTOMERS AS c
-JOIN LOANS AS l ON c.C_ID = l.C_ID
-WHERE l.L_Date &gt; &#x27;2024-12-31&#x27;;
+SELECT c.C_ID, c.C_Name, l.Terms FROM CUSTOMERS AS c, LOANS AS l
+WHERE c.C_ID = l.C_ID AND l.L_Date &gt; &#x27;2024-12-31&#x27;;
 
 SELECT * FROM LOANS ORDER BY RoI DESC;
 
@@ -2467,7 +2570,7 @@ HOSTEL        SPORTS         150 M</code></pre><p>Distance of Hyderabad Head Off
 ACADEMIC        600
 HOSTEL          120
 SPORTS           50</code></pre><p class="part">(i) Suggest the most appropriate location of the server inside the Amritsar University Campus. Justify your choice.</p><p class="part">(ii) Draw the cable layout to efficiently connect various blocks within the Amritsar University Campus.</p><p class="part">(iii) Name any two wired media that can be used to connect various computers of a block inside Amritsar Campus.</p><p class="part">(iv) For the academic purpose, the University will provide its own 24 × 7 FM channel within the University Campus. Which communication medium, out of the following, is used by FM ?</p><p class="choice part">(A) Radio Waves</p><p class="choice part">(B) Micro Waves</p><p class="choice part">(C) Infrared Waves</p><p class="part">(v) (a) The students will be attending a lot of online academic sessions and workshops. These will involve audio-visual communication. Write the full name of the protocol which will be used for such a communication through the internet.</p><p class="either">or</p><p class="choice part">(b) Where should a repeater be installed in Amritsar University campus to boost the signal between blocks ? Justify your answer.</p></div>
-<details class="solution"><summary>Solution</summary><div class="result-copy"><p>I. Put the server in ACADEMIC, which has 600 computers, the most on campus.</p><p>II. Use HOSTEL ─40 m─ ACADEMIC ─60 m─ ADMIN ─80 m─ SPORTS. Total cable length is 180 m.</p><p>III. Twisted-pair Ethernet cable and optical fiber are two wired media.</p><p>IV. Option A, radio waves, carries FM broadcasts.</p><p>V-A. H.323 is an ITU-T standard for packet-based multimedia communications. V-B. The shortest layout needs no repeater on standard 100 m copper Ethernet links. If a direct copper link longer than 100 m is required, for example ADMIN–HOSTEL at 160 m, place an active repeater or switch so each segment is within 100 m, or use fiber.</p></div></details></div></article></section>
+<details class="solution"><summary>Solution</summary><div class="result-copy"><p>I. Put the server in ACADEMIC, which has 600 computers, the most on campus.</p><p>II. Use HOSTEL ─40 m─ ACADEMIC ─60 m─ ADMIN ─80 m─ SPORTS. Total cable length is 180 m.</p><p>III. Twisted-pair Ethernet cable and optical fiber are two wired media.</p><p>IV. Option A, radio waves, carries FM broadcasts.</p><p>V-A. Voice over Internet Protocol (VoIP). V-B. The shortest layout needs no repeater on standard 100 m copper Ethernet links. If a direct copper link longer than 100 m is required, for example ADMIN–HOSTEL at 160 m, place an active repeater or switch so each segment is within 100 m, or use fiber.</p></div></details></div></article></section>
 <section id="quick-revision" class="notes-page" data-page aria-label="Quick Revision" hidden><nav class="notes-index" aria-label="Jump to a revision chapter">
   <a href="#notes-ch1">Ch 1</a><a href="#notes-ch2">Ch 2</a><a href="#notes-ch3">Ch 3</a><a href="#notes-ch4">Ch 4</a><a href="#notes-ch5">Ch 5</a><a href="#notes-ch6">Ch 6</a><a href="#notes-ch9">Ch 9</a><a href="#notes-ch10">Ch 10</a><a href="#notes-ch11">Ch 11</a><a href="#notes-ch12">Ch 12</a>
 </nav>
@@ -2510,7 +2613,7 @@ SPORTS           50</code></pre><p class="part">(i) Suggest the most appropriate
     <ul>
       <li><code>r</code> reads an existing file, <code>w</code> creates or truncates, and <code>a</code> writes at the end. Add <code>b</code> for binary mode. <code>with open(...)</code> closes the file automatically.</li>
       <li>Iterate over a text file line by line. <code>tell()</code> reports the current position and <code>seek(0)</code> returns to the start.</li>
-      <li>For CSV, use <code>csv.reader</code> and <code>csv.writer</code> with <code>newline=""</code>. Skip a header with <code>next(reader, None)</code> when one is present. Convert numeric fields before arithmetic.</li>
+      <li>For CSV, use <code>csv.reader</code> and <code>csv.writer</code> with <code>newline=""</code>. If the file has a header, skip the first row in the loop. Convert numeric fields before arithmetic.</li>
       <li>Read sequential pickle records with repeated <code>pickle.load()</code> until <code>EOFError</code>. To update records, read the original file before opening it in <code>wb</code> and rewriting the complete record set.</li>
     </ul>
     <a class="practice" href="#p5-q33">Practice · Paper 4, Q33</a>
@@ -2521,7 +2624,7 @@ SPORTS           50</code></pre><p class="part">(i) Suggest the most appropriate
     <ul>
       <li>A stack is last in, first out. With a Python list, <code>append(item)</code> pushes, <code>pop()</code> removes the top, and <code>stack[-1]</code> reads it.</li>
       <li>Check <code>if not stack</code> before popping or peeking. Popping an empty stack is underflow.</li>
-      <li>Use <code>reversed(stack)</code> to display top to bottom without removing entries. Use repeated <code>pop()</code> when the question asks you to empty it.</li>
+      <li>Use <code>range(len(stack) - 1, -1, -1)</code> to display top to bottom without removing entries. Use repeated <code>pop()</code> when the question asks you to empty it.</li>
     </ul>
     <a class="practice" href="#p4-q30">Practice · Paper 3, Q30</a>
   </section>
@@ -2532,7 +2635,7 @@ SPORTS           50</code></pre><p class="part">(i) Suggest the most appropriate
       <li>PAN covers personal devices, LAN covers a local site, MAN spans a metropolitan area, and WAN spans larger distances. A connection between campuses in different cities is a WAN.</li>
       <li>A switch connects devices on a LAN. A router forwards packets between networks. A gateway is a route out of a network. A repeater regenerates signals.</li>
       <li>For a campus layout, compare actual cable lengths and equipment placement. Standard twisted-pair Ethernet links are typically limited to 100 m. Fiber suits longer, high-bandwidth links.</li>
-      <li>HTTP(S) serves web resources, FTP transfers files, SMTP sends email, and POP3 or IMAP retrieves or accesses email. VoIP carries voice over IP.</li>
+      <li>HTTP(S) serves web resources, FTP transfers files, SMTP sends email, and POP3 retrieves email. VoIP carries voice over IP.</li>
     </ul>
     <a class="practice" href="#p2-q37">Practice · Paper 2, Q37</a>
   </section>
@@ -2582,7 +2685,7 @@ GROUP BY event_name
 HAVING COUNT(*) &gt; 1;</code></pre>
     <ul>
       <li><code>WHERE</code> filters rows before grouping. <code>HAVING</code> filters groups. <code>COUNT(*)</code> counts rows, while <code>COUNT(column)</code> counts non-NULL values. <code>AVG</code> also skips NULLs.</li>
-      <li>Use <code>JOIN ... ON</code> to state how rows match. <code>NATURAL JOIN</code> matches all shared column names. <code>CROSS JOIN</code> pairs every row on the left with every row on the right.</li>
+      <li><code>FROM A, B</code> forms a Cartesian product. For an equi-join, add a condition such as <code>WHERE A.id = B.id</code>. <code>NATURAL JOIN</code> matches columns with the same names.</li>
     </ul>
     <a class="practice" href="#p4-q34">Practice · Paper 3, Q34</a>
   </section>
